@@ -98,5 +98,5 @@ resource "aws_cloudfront_public_key" "signing" {
   count       = length(var.cloudfront_public_keys)
   comment     = module.cdn_label.id
   name        = format("%s-%d", module.cdn_label.id, count.index)
-  encoded_key = var.cloudfront_encode_keys ? base64encode(var.cloudfront_public_keys[count.index]) : var.cloudfront_public_keys[count.index]
+  encoded_key = var.cloudfront_public_keys[count.index]
 }
