@@ -20,7 +20,7 @@ resource "aws_cloudfront_origin_access_identity" "signer" {
 resource "aws_cloudfront_distribution" "cdn" {
   enabled             = true
   is_ipv6_enabled     = true
-  aliases             = concat([local.dns_zone_name], var.cdn_aliases)
+  aliases             = concat([var.dns_zone_name], var.cloudfront_aliases)
   comment             = var.cloudfront_comment
   default_root_object = var.cloudfront_default_root
   price_class         = var.cloudfront_price_class

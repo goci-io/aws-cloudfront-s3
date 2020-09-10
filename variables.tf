@@ -51,6 +51,18 @@ variable "cloudfront_aliases" {
   description = "Domain Aliases for the Cloudfront Distribution"
 }
 
+variable "cloudfront_comment" {
+  type        = string
+  default     = ""
+  description = "Description for the Cloudfront Distribution"
+}
+
+variable "cloudfront_default_root" {
+  type        = string
+  default     = ""
+  description = "Default Key for Cloudfront Root Domain"
+}
+
 variable "cloudfront_domain" {
   type        = string
   description = "Domain for Cloudfront to use"
