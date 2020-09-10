@@ -110,3 +110,9 @@ variable "cloudfront_404_rewrite_code" {
   default     = "200"
   description = "HTTP Code to return instead of 404. Only applies when cloudfront_404_redirect specifies a Key"
 }
+
+variable "cloudfront_public_keys" {
+  type        = list(string)
+  default     = []
+  description = "Public Keys in PEM Format to upload to Cloudfront (for example for URL Signing)"
+}
