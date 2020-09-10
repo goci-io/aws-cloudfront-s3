@@ -21,17 +21,19 @@ resource "aws_acm_certificate_validation" "cloudfront" {
 locals {
   # Workaround for https://github.com/terraform-providers/terraform-provider-aws/issues/8531
   zone_map = zipmap(local.all_zones.*.name, data.aws_route53_zone.zones.*.zone_id)
+
+  validation_options = length(aws_acm_certificate.cloudfront.*.domain_validation_options) > 0 ? aws_acm_certificate.cloudfront[0].domain_validation_options : []
 }
 
 data "null_data_source" "dns_validations" {
   count = length(local.all_zones)
 
   inputs = {
-    name  = aws_acm_certificate.cloudfront.domain_validation_options[count.index].resource_record_name
-    type  = aws_acm_certificate.cloudfront.domain_validation_options[count.index].resource_record_type
-    value = aws_acm_certificate.cloudfront.domain_validation_options[count.index].resource_record_value
+    name  = local.validation_options[count.index].resource_record_name
+    type  = local.validation_options[count.index].resource_record_type
+    value = local.validation_options[count.index].resource_record_value
     # See local.zone_map and workaround. Example record name:
     # _7f0f8d5d2a2d54fb723fa4c93d08f8ae.dashboard.dev.corp.eu1.goci.io. (note trailing dot)
-    zone = local.zone_map[join(".", slice(split(".", aws_acm_certificate.cloudfront.domain_validation_options[count.index].resource_record_name), 1, length(split(".", aws_acm_certificate.cloudfront.domain_validation_options[count.index].resource_record_name)) - 1))]
+    zone = local.zone_map[join(".", slice(split(".", local.validation_options[count.index].resource_record_name), 1, length(split(".", local.validation_options[count.index].resource_record_name)) - 1))]
   }
 }
