@@ -116,3 +116,9 @@ variable "cloudfront_public_keys" {
   default     = []
   description = "Public Keys in PEM Format to upload to Cloudfront (for example for URL Signing)"
 }
+
+variable "lifecycle_expiration_rules" {
+  type        = map({ prefix = string, expirationInDays = number })
+  default     = {}
+  description = "Expiration Lifecycle Rules for the S3 Bucket."
+}
