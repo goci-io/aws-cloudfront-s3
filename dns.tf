@@ -1,5 +1,5 @@
 locals {
-  all_zones = var.dns_zone_name == "" [] : concat(
+  all_zones = var.dns_zone_name == "" ? [] : concat(
     var.acm_subject_alternative_dns,
     [{ name = var.cloudfront_domain, zone = var.dns_zone_name }]
   )
