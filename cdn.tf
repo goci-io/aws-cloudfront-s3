@@ -18,7 +18,6 @@ resource "aws_cloudfront_origin_access_identity" "signer" {
 }
 
 resource "aws_cloudfront_distribution" "cdn" {
-  depends_on          = [aws_acm_certificate_validation.cloudfront]
   enabled             = true
   is_ipv6_enabled     = true
   aliases             = concat([local.dns_zone_name], var.cdn_aliases)
