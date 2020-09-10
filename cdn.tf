@@ -59,10 +59,22 @@ resource "aws_cloudfront_distribution" "cdn" {
     }
   }
 
-  viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate_validation.cloudfront.certificate_arn
-    minimum_protocol_version = "TLSv1.2_2018"
-    ssl_support_method       = "sni-only"
+  dynamic "viewer_certificate" {
+    for_each = var.dns_zone_name == "" ? [] : [1]
+
+    content {
+      acm_certificate_arn      = join("", aws_acm_certificate_validation.cloudfront.*.certificate_arn)
+      minimum_protocol_version = "TLSv1.2_2018"
+      ssl_support_method       = "sni-only"
+    }
+  }
+
+  dynamic "viewer_certificate" {
+    for_each = var.dns_zone_name == "" [1] : []
+
+    content {
+      cloudfront_default_certificate = true
+    }
   }
 
   restrictions {
