@@ -13,5 +13,5 @@ resource "aws_acm_certificate" "cloudfront" {
 resource "aws_acm_certificate_validation" "cloudfront" {
   provider                = aws.us-east
   certificate_arn         = aws_acm_certificate.cloudfront.arn
-  validation_record_fqdns = aws_route53_record.cloudfront_validation.*.fqdn
+  validation_record_fqdns = aws_route53_record.cloudfront_acm_validation.*.fqdn
 }
