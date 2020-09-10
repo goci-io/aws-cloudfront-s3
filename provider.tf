@@ -14,5 +14,3 @@ provider "aws" {
 provider "aws" {
   alias = "us-east"
 }
-
-data "aws_caller_identity" "current" {}
