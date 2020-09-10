@@ -93,3 +93,10 @@ resource "aws_cloudfront_distribution" "cdn" {
     }
   }
 }
+
+resource "aws_cloudfront_public_key" "signing" {
+  count       = length(var.cloudfront_public_keys)
+  name        = format("%s-%d", module.cdn_label.id, count.index)
+  encoded_key = var.cloudfront_public_keys[count.index]
+  comment     = module.cdn_label.id
+}
