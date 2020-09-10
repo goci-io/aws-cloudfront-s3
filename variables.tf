@@ -18,7 +18,6 @@ variable "stage" {
 
 variable "name" {
   type        = string
-  default     = null
   description = "Solution name, e.g. 'app' or 'storage'"
 }
 
@@ -36,6 +35,7 @@ variable "tags" {
 
 variable "dns_zone_name" {
   type        = string
+  default     = ""
   description = "Name of HostedZone to create Cloudfront Records in"
 }
 
@@ -65,6 +65,7 @@ variable "cloudfront_default_root" {
 
 variable "cloudfront_domain" {
   type        = string
+  default     = ""
   description = "Domain for Cloudfront to use"
 }
 

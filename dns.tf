@@ -1,5 +1,5 @@
 locals {
-  all_zones = concat(
+  all_zones = var.dns_zone_name == "" [] : concat(
     var.acm_subject_alternative_dns,
     [{ name = var.cloudfront_domain, zone = var.dns_zone_name }]
   )
@@ -22,6 +22,7 @@ resource "aws_route53_record" "cloudfront_acm_validation" {
 
 module "cdn_dns" {
   source      = "git::https://github.com/goci-io/aws-route53-records.git?ref=tags/0.4.1"
+  enabled     = var.dns_zone_name != ""
   hosted_zone = var.dns_zone_name
   alias_records = concat(
     [{
