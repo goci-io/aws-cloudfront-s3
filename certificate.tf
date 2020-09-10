@@ -14,7 +14,7 @@ resource "aws_acm_certificate" "cloudfront" {
 resource "aws_acm_certificate_validation" "cloudfront" {
   provider                = aws.us-east
   count                   = var.dns_zone_name == "" ? 0 : 1
-  certificate_arn         = aws_acm_certificate.cloudfront.*.arn
+  certificate_arn         = join("", aws_acm_certificate.cloudfront.*.arn)
   validation_record_fqdns = aws_route53_record.cloudfront_acm_validation.*.fqdn
 }
 
