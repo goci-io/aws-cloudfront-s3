@@ -24,7 +24,7 @@ data "null_data_source" "dns_validations" {
     value = aws_acm_certificate.cloudfront.domain_validation_options[count.index].resource_record_value
     # See local.zone_map and workaround. Example record name:
     # _7f0f8d5d2a2d54fb723fa4c93d08f8ae.dashboard.dev.corp.eu1.goci.io. (note trailing dot)
-    zone  = local.zone_map[join(".", slice(split(".", aws_acm_certificate.cloudfront.domain_validation_options[count.index].resource_record_name), 1, length(split(".", aws_acm_certificate.cloudfront.domain_validation_options[count.index].resource_record_name)) - 1))]
+    zone = local.zone_map[join(".", slice(split(".", aws_acm_certificate.cloudfront.domain_validation_options[count.index].resource_record_name), 1, length(split(".", aws_acm_certificate.cloudfront.domain_validation_options[count.index].resource_record_name)) - 1))]
   }
 }
 
@@ -39,8 +39,8 @@ resource "aws_route53_record" "cloudfront_acm_validation" {
 }
 
 module "cdn_dns" {
-  source        = "git::https://github.com/goci-io/aws-route53-records.git?ref=tags/0.4.1"
-  hosted_zone   = var.dns_zone_name
+  source      = "git::https://github.com/goci-io/aws-route53-records.git?ref=tags/0.4.1"
+  hosted_zone = var.dns_zone_name
   alias_records = [
     {
       name       = var.dashboard_domain
