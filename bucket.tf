@@ -14,7 +14,7 @@ resource "aws_s3_bucket" "content" {
         "Rule"      = lifecycle_rule.key
         "Retention" = format("%d Days", lifecycle_rule.value.expirationInDays)
         "Autoclean" = "true"
-      }
+      })
 
       expiration {
         days = lifecycle_rule.value.expirationInDays
