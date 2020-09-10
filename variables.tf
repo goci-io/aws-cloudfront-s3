@@ -117,6 +117,12 @@ variable "cloudfront_public_keys" {
   description = "Public Keys in PEM Format to upload to Cloudfront (for example for URL Signing)"
 }
 
+variable "cloudfront_encode_keys" {
+  type        = bool
+  default     = true
+  description = "Whether to Encode Keys with Base64. Set to false if cloudfront_public_keys are already base64 encoded."
+}
+
 variable "lifecycle_expiration_rules" {
   type        = map(object({ prefix = string, expirationInDays = number }))
   default     = {}
