@@ -5,12 +5,12 @@ resource "aws_s3_bucket" "content" {
 
   dynamic "lifecycle_rule" {
     for_each = var.lifecycle_expiration_rules
-  
+
     content {
       enabled = true
       id      = lifecycle_rule.key
       prefix  = lifecycle_rule.value.prefix
-      tags    = merge(module.cdn_label.tags, {
+      tags = merge(module.cdn_label.tags, {
         "Rule"      = lifecycle_rule.key
         "Retention" = format("%d Days", lifecycle_rule.value.expirationInDays)
         "Autoclean" = "true"
