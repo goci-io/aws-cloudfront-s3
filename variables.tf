@@ -118,7 +118,7 @@ variable "cloudfront_public_keys" {
 }
 
 variable "lifecycle_expiration_rules" {
-  type        = map({ prefix = string, expirationInDays = number })
+  type        = map(object({ prefix = string, expirationInDays = number }))
   default     = {}
   description = "Expiration Lifecycle Rules for the S3 Bucket."
 }
