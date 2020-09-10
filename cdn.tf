@@ -20,11 +20,11 @@ resource "aws_cloudfront_origin_access_identity" "signer" {
 resource "aws_cloudfront_distribution" "cdn" {
   enabled             = true
   is_ipv6_enabled     = true
-  aliases             = concat([var.dns_zone_name], var.cloudfront_aliases)
   comment             = var.cloudfront_comment
   default_root_object = var.cloudfront_default_root
   price_class         = var.cloudfront_price_class
   tags                = module.cdn_label.tags
+  aliases             = var.dns_zone_name == "" ? [] : concat([var.dns_zone_name], var.cloudfront_aliases)
 
   origin {
     domain_name = aws_s3_bucket.content.bucket_regional_domain_name
@@ -59,10 +59,22 @@ resource "aws_cloudfront_distribution" "cdn" {
     }
   }
 
-  viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate_validation.cloudfront.certificate_arn
-    minimum_protocol_version = "TLSv1.2_2018"
-    ssl_support_method       = "sni-only"
+  dynamic "viewer_certificate" {
+    for_each = var.dns_zone_name == "" ? [] : [1]
+
+    content {
+      acm_certificate_arn      = join("", aws_acm_certificate_validation.cloudfront.*.certificate_arn)
+      minimum_protocol_version = "TLSv1.2_2018"
+      ssl_support_method       = "sni-only"
+    }
+  }
+
+  dynamic "viewer_certificate" {
+    for_each = var.dns_zone_name == "" ? [1] : []
+
+    content {
+      cloudfront_default_certificate = true
+    }
   }
 
   restrictions {
