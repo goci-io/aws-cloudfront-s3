@@ -20,16 +20,6 @@ resource "aws_route53_record" "cloudfront_acm_validation" {
   records         = [data.null_data_source.dns_validations[count.index].outputs.value]
 }
 
-data "null_data_source" "cloudfront_alias" {
-  count = length(var.cloudfront_aliases)
-
-  inputs = {
-    name       = var.cloudfront_aliases[count.index]
-    alias      = aws_cloudfront_distribution.cdn.domain_name
-    alias_zone = aws_cloudfront_distribution.cdn.hosted_zone_id
-  }
-}
-
 module "cdn_dns" {
   source      = "git::https://github.com/goci-io/aws-route53-records.git?ref=tags/0.4.1"
   hosted_zone = var.dns_zone_name
@@ -39,6 +29,10 @@ module "cdn_dns" {
       alias      = aws_cloudfront_distribution.cdn.domain_name
       alias_zone = aws_cloudfront_distribution.cdn.hosted_zone_id
     }],
-    data.null_data_source.*.cloudfront_alias.outputs
+    [for alias in var.cloudfront_aliases : {
+      name       = alias
+      alias      = aws_cloudfront_distribution.cdn.domain_name
+      alias_zone = aws_cloudfront_distribution.cdn.hosted_zone_id
+    }]
   )
 }
