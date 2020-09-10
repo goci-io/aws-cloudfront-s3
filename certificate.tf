@@ -1,7 +1,11 @@
+locals {
+  domain_name = var.cloudfront_domain == "" ? var.dns_zone_name : format("%s.%s", var.cloudfront_domain, var.dns_zone_name)
+}
+
 resource "aws_acm_certificate" "cloudfront" {
   provider                  = aws.us-east
   count                     = var.dns_zone_name == "" ? 0 : 1
-  domain_name               = var.cloudfront_domain == "" ? var.dns_zone_name : format("%s.%s", var.cloudfront_domain, var.dns_zone_name)
+  domain_name               = local.domain_name
   validation_method         = "DNS"
   tags                      = module.cdn_label.tags
   subject_alternative_names = var.acm_subject_alternative_dns.*.name
