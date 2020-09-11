@@ -32,7 +32,7 @@ locals {
   validations_map = [for validation in local.validation_options : {
     name  = validation.resource_record_name
     type  = validation.resource_record_type
-    value = validation.value
+    value = validation.resource_record_value
 
     # 1. Get Zone By Record Name (without Validation Prefix, <validation>.my.record.io becomes my.record.io)
     # 2. Trimsuffix is to cut off potential trailing Dots (validation record names might contain some)

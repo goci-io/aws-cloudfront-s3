@@ -25,7 +25,7 @@ resource "aws_cloudfront_distribution" "cdn" {
   default_root_object = var.cloudfront_default_root
   price_class         = var.cloudfront_price_class
   tags                = module.cdn_label.tags
-  aliases             = var.dns_zone_name == "" ? [] : concat([local.domain_name], var.cloudfront_aliases)
+  aliases             = var.dns_zone_name == "" ? [] : concat([local.domain_name], keys(var.cloudfront_aliases))
 
   origin {
     domain_name = aws_s3_bucket.content.bucket_regional_domain_name
@@ -43,7 +43,7 @@ resource "aws_cloudfront_distribution" "cdn" {
 
   default_cache_behavior {
     cached_methods         = ["GET", "HEAD"]
-    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
+    allowed_methods        = ["GET", "HEAD"]
     target_origin_id       = local.s3_origin_id
     min_ttl                = var.cloudfront_min_ttl
     max_ttl                = var.cloudfront_max_ttl
