@@ -26,20 +26,21 @@ module "cloudfront" {
 
 This will result in a custom Domain Alias Record in Route53 `cdn.goci.io` pointing to your Cloudfront Distribution. 
 Using a custom Domain automatically generates a custom ACM Certificate and Validation Records.
-Using `cloudfront_aliases` supports adding multiple Aliases.
-
-In case you are using Aliases in **different Hosted Zones** do not forget to update ACM SANs:
+Using `cloudfront_aliases` supports adding multiple Aliases in different Hosted Zones.
 
 ```hcl
 module "cloudfront" {
   ...
   dns_zone_name               = "goci.io"
   cloudfront_domain           = "cdn"
-  cloudfront_aliases          = ["cdn.different-zone.goci.io"]
-  acm_subject_alternative_dns = [
-    { name = "cdn.different-zone.goci.io", zone = "different-zone.goci.io" },
-  ]
+  cloudfront_aliases          = [{
+    name = "cdn.different-zone.goci.io"
+    zone = "different-zone.goci.io" 
+  }]
 }
 ```
+
+The above Example results in two custom Domains for the Cloudfront Distribution:  
+`cdn.goci.io` and `cdn.different-zone.goci.io`
 
 _This repository was created via [github-repository](https://github.com/goci-io/github-repository)._
