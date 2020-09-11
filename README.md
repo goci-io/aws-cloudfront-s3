@@ -7,12 +7,30 @@
 ### Usage
 
 ```hcl
+provider "aws" {
+  # ...
+}
+
+provider "aws" {
+  # ...
+  alias  = "us-east"
+  region = "us-east-1"
+}
+
 module "cloudfront" {
   source    = "git::https://github.com/goci-io/aws-cloudfront-s3.git?ref=tags/<latest-version>"
   namespace = "goci"
   name      = "cdn"
+
+  providers = {
+    aws         = aws
+    aws.us-east = aws.us-east
+  }
 }
 ```
+
+Provider Configuration is required. Only non-aliased Providers are [implicitly inherited](https://www.terraform.io/docs/configuration/modules.html#implicit-provider-inheritance).
+Cloudfront requires Certificates to be in Region `us-east-1`. When running in us-east-1 anyway you can omit the provider Configuration.
 
 #### Enable Custom Domain
 
