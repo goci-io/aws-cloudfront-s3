@@ -9,8 +9,8 @@ data "aws_route53_zone" "zones" {
 }
 
 locals {
-  trimmed_zone_names = [for zone in aws_route53_zone.zones : trimsuffix(zone.name, ".")]
-  zone_to_id         = zipmap(local.trimmed_zone_names, aws_route53_zone.zones.*.zone_id)
+  trimmed_zone_names = [for zone in data.aws_route53_zone.zones : trimsuffix(zone.name, ".")]
+  zone_to_id         = zipmap(local.trimmed_zone_names, data.aws_route53_zone.zones.*.zone_id)
 }
 
 resource "aws_acm_certificate" "cloudfront" {
