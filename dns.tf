@@ -3,7 +3,10 @@ locals {
     var.acm_subject_alternative_dns,
     [{ name = var.cloudfront_domain, zone = var.dns_zone_name }]
   )
+
+  domain_name = var.cloudfront_domain == "" ? var.dns_zone_name : format("%s.%s", var.cloudfront_domain, var.dns_zone_name)
 }
+
 
 data "aws_route53_zone" "zones" {
   count = length(local.all_zones)

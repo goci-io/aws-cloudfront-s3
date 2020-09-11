@@ -1,7 +1,3 @@
-locals {
-  domain_name = var.cloudfront_domain == "" ? var.dns_zone_name : format("%s.%s", var.cloudfront_domain, var.dns_zone_name)
-}
-
 resource "aws_acm_certificate" "cloudfront" {
   provider                  = aws.us-east
   count                     = var.dns_zone_name == "" ? 0 : 1
