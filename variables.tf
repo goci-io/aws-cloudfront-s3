@@ -39,16 +39,10 @@ variable "dns_zone_name" {
   description = "Name of HostedZone to create Cloudfront Records in"
 }
 
-variable "acm_subject_alternative_dns" {
-  type        = list(object({ name = string, zone = string }))
-  default     = []
-  description = "Record and Zone Names to create ACM Subject Alternative Names for. Required when cloudfront_aliases contains Aliases from multiple Hosted Zones"
-}
-
 variable "cloudfront_aliases" {
-  type        = list(string)
-  default     = []
-  description = "Domain Aliases for the Cloudfront Distribution"
+  type        = map(string)
+  default     = {}
+  description = "Domain Aliases for the Cloudfront Distribution in form of Record Name => Zone Name"
 }
 
 variable "cloudfront_comment" {
