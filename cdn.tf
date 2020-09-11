@@ -63,9 +63,8 @@ resource "aws_cloudfront_distribution" "cdn" {
     for_each = var.dns_zone_name == "" ? [] : [1]
 
     content {
-      acm_certificate_arn      = join("", aws_acm_certificate_validation.cloudfront.*.certificate_arn)
-      minimum_protocol_version = "TLSv1.2_2018"
-      ssl_support_method       = "sni-only"
+      acm_certificate_arn = join("", aws_acm_certificate_validation.cloudfront.*.certificate_arn)
+      ssl_support_method  = "sni-only"
     }
   }
 
