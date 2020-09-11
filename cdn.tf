@@ -3,6 +3,7 @@ module "cdn_label" {
   environment = var.environment
   namespace   = var.namespace
   name        = var.name
+  stage       = var.stage
   attributes  = var.attributes
   tags        = var.tags
 }
