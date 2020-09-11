@@ -61,7 +61,7 @@ resource "aws_s3_bucket_policy" "cdn_access" {
 resource "aws_s3_bucket_public_access_block" "public_block" {
   bucket                  = aws_s3_bucket.content.id
   block_public_acls       = true
-  block_public_policy     = true
-  restrict_public_buckets = true
   ignore_public_acls      = true
+  block_public_policy     = false
+  restrict_public_buckets = false
 }
