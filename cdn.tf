@@ -48,8 +48,8 @@ resource "aws_cloudfront_distribution" "cdn" {
     min_ttl                = var.cloudfront_min_ttl
     max_ttl                = var.cloudfront_max_ttl
     default_ttl            = var.cloudfront_default_ttl
+    trusted_signers        = var.cloudfront_trusted_signers
     viewer_protocol_policy = var.cloudfront_viewer_protocol_policy
-    trusted_signers        = ["self"]
 
     forwarded_values {
       query_string = true

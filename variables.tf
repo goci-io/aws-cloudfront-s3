@@ -45,6 +45,12 @@ variable "cloudfront_aliases" {
   description = "Domain Aliases for the Cloudfront Distribution in form of Record Name => Zone Name"
 }
 
+variable "cloudfront_trusted_signers" {
+  type        = list(string)
+  default     = []
+  description = "Trusted AWS Account IDs or Keyword 'self' to allow signing URLs for this Distribution"
+}
+
 variable "cloudfront_comment" {
   type        = string
   default     = ""
