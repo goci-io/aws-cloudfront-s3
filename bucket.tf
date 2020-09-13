@@ -21,6 +21,18 @@ resource "aws_s3_bucket" "content" {
       }
     }
   }
+
+  dynamic "cors_rule" {
+    for_each = var.enable_cors ? [1] : []
+
+    content {
+      allowed_headers = var.cors_allowed_headers
+      allowed_methods = var.cors_allowed_methods
+      allowed_origins = var.cors_allowed_origins
+      expose_headers  = ["ETag"]
+      max_age_seconds = 3600
+    }
+  }
 }
 
 data "aws_iam_policy_document" "allow_cf" {

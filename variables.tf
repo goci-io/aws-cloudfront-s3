@@ -126,7 +126,7 @@ variable "cloudfront_cached_methods" {
 variable "cloudfront_allowed_methods" {
   type        = list(string)
   default     = ["GET", "HEAD"]
-  description = "Methods CloudFront allows. Enable OPTIONS when you need CORS Support"
+  description = "Methods CloudFront allows. For CORS Support set enable_cors to true. OPTIONS will be automatically added"
 }
 
 variable "cloudfront_compress" {
@@ -139,4 +139,28 @@ variable "lifecycle_expiration_rules" {
   type        = map(object({ prefix = string, expirationInDays = number }))
   default     = {}
   description = "Expiration Lifecycle Rules for the S3 Bucket."
+}
+
+variable "enable_cors" {
+  type        = bool
+  default     = false
+  description = "Enables CORS."
+}
+
+variable "cors_allowed_headers" {
+  type        = list(string)
+  default     = ["referer", "origin", "user-agent"]
+  description = "Allowed Headers for CORS Requests"
+}
+
+variable "cors_allowed_methods" {
+  type        = list(string)
+  default     = ["GET"]
+  description = "Allowed Methods for CORS Requests"
+}
+
+variable "cors_allowed_origins" {
+  type        = list(string)
+  default     = ["*"]
+  description = "Allowed Origins for CORS. Its recommended to change the default value to only allow specific Origins."
 }
