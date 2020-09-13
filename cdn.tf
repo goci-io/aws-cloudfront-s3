@@ -42,8 +42,8 @@ resource "aws_cloudfront_distribution" "cdn" {
   }
 
   default_cache_behavior {
-    cached_methods         = ["GET", "HEAD"]
-    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = var.cloudfront_cached_methods
+    allowed_methods        = var.cloudfront_allowed_methods
     target_origin_id       = local.s3_origin_id
     min_ttl                = var.cloudfront_min_ttl
     max_ttl                = var.cloudfront_max_ttl
