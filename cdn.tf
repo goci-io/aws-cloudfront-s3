@@ -18,6 +18,11 @@ resource "aws_cloudfront_origin_access_identity" "signer" {
   comment = module.cdn_label.id
 }
 
+locals {
+  allowed_methods = var.enable_cors ? distinct(concat(["OPTIONS"], var.cloudfront_allowed_methods)) : var.cloudfront_allowed_methods
+  cors_headers    = ["Origin", "Access-Control-Request-Headers", "Access-Control-Request-Method"]
+}
+
 resource "aws_cloudfront_distribution" "cdn" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -43,7 +48,7 @@ resource "aws_cloudfront_distribution" "cdn" {
 
   default_cache_behavior {
     cached_methods         = var.cloudfront_cached_methods
-    allowed_methods        = var.cloudfront_allowed_methods
+    allowed_methods        = local.allowed_methods
     target_origin_id       = local.s3_origin_id
     compress               = var.cloudfront_compress
     min_ttl                = var.cloudfront_min_ttl
@@ -54,6 +59,7 @@ resource "aws_cloudfront_distribution" "cdn" {
 
     forwarded_values {
       query_string = true
+      headers      = var.enable_cors ? local.cors_headers : []
 
       cookies {
         forward = "none"
