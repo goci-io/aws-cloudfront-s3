@@ -129,6 +129,12 @@ variable "cloudfront_allowed_methods" {
   description = "Methods CloudFront allows. Enable OPTIONS when you need CORS Support"
 }
 
+variable "cloudfront_compress" {
+  type        = bool
+  default     = true
+  description = "Enables or Disables Cloudfront Compression"
+}
+
 variable "lifecycle_expiration_rules" {
   type        = map(object({ prefix = string, expirationInDays = number }))
   default     = {}
